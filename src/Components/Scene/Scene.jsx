@@ -100,7 +100,7 @@ const MyScene = () => {
       const newAspect = window.innerWidth / window.innerHeight;
       camera.current.aspect = newAspect;
       camera.current.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio)
 
       // Adjust model scale based on the screen size
       const scale = window.innerWidth / 1000; // Adjust the scale factor as needed
