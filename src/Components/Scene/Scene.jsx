@@ -31,7 +31,8 @@ const MyScene = () => {
 
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( innerWidth, innerHeight );
     document.body.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
@@ -100,8 +101,8 @@ const MyScene = () => {
       const newAspect = window.innerWidth / window.innerHeight;
       camera.current.aspect = newAspect;
       camera.current.updateProjectionMatrix();
-      renderer.setPixelRatio(window.devicePixelRatio)
-
+      renderer.setPixelRatio( window.devicePixelRatio );
+      renderer.setSize( innerWidth, innerHeight );
       // Adjust model scale based on the screen size
       const scale = window.innerWidth / 1000; // Adjust the scale factor as needed
       model.current.scale.set(scale, scale, scale);
