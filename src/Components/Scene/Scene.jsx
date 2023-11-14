@@ -36,7 +36,7 @@ const MyScene = () => {
     const scene = new THREE.Scene();
 
     const loader = new GLTFLoader();
-    loader.load('./cube.glb', (gltf) => {
+    loader.load('https://soundcheck-bucket.s3.ap-south-1.amazonaws.com/cube.glb', (gltf) => {
       const model = gltf.scene;
       scene.add(model);
     });
