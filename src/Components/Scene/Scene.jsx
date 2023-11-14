@@ -36,7 +36,7 @@ const MyScene = () => {
     const scene = new THREE.Scene();
 
     const loader = new GLTFLoader();
-    loader.load('./skills4.glb', (gltf) => {
+    loader.load('./cube.glb', (gltf) => {
       const model = gltf.scene;
       scene.add(model);
     });
