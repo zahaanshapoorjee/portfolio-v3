@@ -131,8 +131,8 @@ const MyScene = () => {
 // Outside of MyScene component, create a single Canvas component
 const App = () => {
   return (
-    <Canvas style={{ position: 'absolute', top: 0, left: 0 }}>
-      <MyScene />
+    <Canvas style={{ position: 'absolute', top: 0, left: 0, width:'100%', height:'100' }}>
+      <MyScene style={{ width:'100%', height:'100' }} />
     </Canvas>
   );
 };
