@@ -8,9 +8,9 @@ const Navbar = ({ handleNavigation }) => {
   return (
     <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 1 }}>
       <button onClick={() => handleNavigation(new THREE.Vector3(3.5, 0, 0))}>About</button>
-      <button onClick={() => handleNavigation(new THREE.Vector3(-3.5, 0, 0))}>Navigate to 2</button>
-      <button onClick={() => handleNavigation(new THREE.Vector3(0, 0, 3.5))}>Navigate to 3</button>
-      <button onClick={() => handleNavigation(new THREE.Vector3(0, 0, -3.5))}>Navigate to 4</button>
+      <button onClick={() => handleNavigation(new THREE.Vector3(-3.5, 0, 0))}>Skills</button>
+      <button onClick={() => handleNavigation(new THREE.Vector3(0, 0, 3.5))}>Projects</button>
+      <button onClick={() => handleNavigation(new THREE.Vector3(0, 0, -3.5))}>Football</button>
     </div>
   );
 };
