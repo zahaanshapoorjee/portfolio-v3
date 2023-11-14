@@ -7,6 +7,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const MyScene = () => {
   const camera = useRef(new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000));
   const controls = useRef(null);
+  const model = useRef(null);
 
   const handleNavigation = useCallback((targetPosition) => {
     const startPosition = camera.current.position.clone();
@@ -37,8 +38,8 @@ const MyScene = () => {
 
     const loader = new GLTFLoader();
     loader.load('https://soundcheck-bucket.s3.ap-south-1.amazonaws.com/cube.glb', (gltf) => {
-      const model = gltf.scene;
-      scene.add(model);
+      model.current = gltf.scene;
+      scene.add(model.current);
     });
 
     // Adjust the initial camera position to be away from the cube
@@ -95,12 +96,18 @@ const MyScene = () => {
       }
     };
 
-    window.addEventListener('resize', () => {
-      camera.current.aspect = window.innerWidth / window.innerHeight;
+    const handleResize = () => {
+      const newAspect = window.innerWidth / window.innerHeight;
+      camera.current.aspect = newAspect;
       camera.current.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-    });
 
+      // Adjust model scale based on the screen size
+      const scale = window.innerWidth / 1000; // Adjust the scale factor as needed
+      model.current.scale.set(scale, scale, scale);
+    };
+
+    window.addEventListener('resize', handleResize);
     document.addEventListener('keydown', handleKeyPress);
 
     const animate = () => {
@@ -113,6 +120,7 @@ const MyScene = () => {
 
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
+      window.removeEventListener('resize', handleResize);
     };
   }, [handleNavigation]);
 
