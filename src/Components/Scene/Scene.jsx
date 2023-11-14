@@ -4,6 +4,17 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+const Navbar = ({ handleNavigation }) => {
+  return (
+    <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 1 }}>
+      <button onClick={() => handleNavigation(new THREE.Vector3(3.5, 0, 0))}>About</button>
+      <button onClick={() => handleNavigation(new THREE.Vector3(-3.5, 0, 0))}>Navigate to 2</button>
+      <button onClick={() => handleNavigation(new THREE.Vector3(0, 0, 3.5))}>Navigate to 3</button>
+      <button onClick={() => handleNavigation(new THREE.Vector3(0, 0, -3.5))}>Navigate to 4</button>
+    </div>
+  );
+};
+
 const MyScene = () => {
   const camera = useRef(new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000));
   const controls = useRef(null);
@@ -31,8 +42,8 @@ const MyScene = () => {
 
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( innerWidth, innerHeight );
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(innerWidth, innerHeight);
     document.body.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
@@ -101,8 +112,8 @@ const MyScene = () => {
       const newAspect = window.innerWidth / window.innerHeight;
       camera.current.aspect = newAspect;
       camera.current.updateProjectionMatrix();
-      renderer.setPixelRatio( window.devicePixelRatio );
-      renderer.setSize( innerWidth, innerHeight );
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(innerWidth, innerHeight);
       // Adjust model scale based on the screen size
       const scale = window.innerWidth / 1000; // Adjust the scale factor as needed
       model.current.scale.set(scale, scale, scale);
@@ -130,10 +141,33 @@ const MyScene = () => {
 
 // Outside of MyScene component, create a single Canvas component
 const App = () => {
+  const handleNavigation = useCallback((targetPosition) => {
+    const startPosition = camera.current.position.clone();
+    const duration = 1000;
+    const startTime = Date.now();
+
+    const animate = () => {
+      const currentTime = Date.now();
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+
+      camera.current.position.lerpVectors(startPosition, targetPosition, progress);
+      controls.current.update();
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    animate();
+  }, []);
+
   return (
-    <Canvas style={{ position: 'absolute', top: 0, left: 0, width:'100%', height:'100' }}>
-      <MyScene style={{ width:'100%', height:'100' }} />
-    </Canvas>
+    <>
+      <Navbar handleNavigation={handleNavigation} />
+      <Canvas style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+        <MyScene />
+      </Canvas>
+    </>
   );
 };
 
