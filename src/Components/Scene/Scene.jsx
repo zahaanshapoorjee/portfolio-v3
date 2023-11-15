@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { Canvas } from 'react-three-fiber';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { Clock } from 'three/src/core/Clock';
+
+
 
 const Navbar = ({ handleNavigation, mySceneRef }) => {
   const buttonStyles = {
@@ -81,8 +83,9 @@ const MyScene = React.forwardRef((props, ref) => {
 
       requestAnimationFrame(animateRotation);
     };
-
     animateRotation();
+
+    
   };
 
 
@@ -95,7 +98,7 @@ const MyScene = React.forwardRef((props, ref) => {
     const scene = new THREE.Scene();
 
     const loader = new GLTFLoader();
-    loader.load('https://soundcheck-bucket.s3.ap-south-1.amazonaws.com/cube.glb', (gltf) => {
+    loader.load('./ZAHAANCUBE.glb', (gltf) => {
       model.current = gltf.scene;
       scene.add(model.current);
     });
