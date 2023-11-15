@@ -12,7 +12,7 @@ const Navbar = ({ handleNavigation, mySceneRef }) => {
     backgroundColor: "Transparent",
     color: "white",
     width: "20vw",
-    fontFamily: "Roboto, sans-serif",
+    fontFamily: "Lato",
     border: "none"
   };
 
