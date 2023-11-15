@@ -4,18 +4,23 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-const Navbar = ({ handleNavigation }) => {
+const Navbar = ({ handleNavigation, mySceneRef }) => {
+  const handleButtonClick = (targetPosition) => {
+    const { camera, controls } = mySceneRef.current;
+    handleNavigation(targetPosition, camera, controls);
+  };
+
   return (
     <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 1 }}>
-      <button onClick={() => handleNavigation(new THREE.Vector3(3.5, 0, 0))}>About</button>
-      <button onClick={() => handleNavigation(new THREE.Vector3(-3.5, 0, 0))}>Skills</button>
-      <button onClick={() => handleNavigation(new THREE.Vector3(0, 0, 3.5))}>Projects</button>
-      <button onClick={() => handleNavigation(new THREE.Vector3(0, 0, -3.5))}>Football</button>
+      <button onClick={() => handleButtonClick(new THREE.Vector3(3.5, 0, 0))}>About</button>
+      <button onClick={() => handleButtonClick(new THREE.Vector3(-3.5, 0, 0))}>Skills</button>
+      <button onClick={() => handleButtonClick(new THREE.Vector3(0, 0, 3.5))}>Projects</button>
+      <button onClick={() => handleButtonClick(new THREE.Vector3(0, 0, -3.5))}>Football</button>
     </div>
   );
 };
 
-const MyScene = () => {
+const MyScene = React.forwardRef((props, ref) => {
   const camera = useRef(new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000));
   const controls = useRef(null);
   const model = useRef(null);
@@ -54,7 +59,6 @@ const MyScene = () => {
       scene.add(model.current);
     });
 
-    // Adjust the initial camera position to be away from the cube
     camera.current.position.set(10, 0, 0);
     camera.current.lookAt(0, 0, 0);
 
@@ -64,9 +68,7 @@ const MyScene = () => {
     controls.current.screenSpacePanning = false;
     controls.current.maxPolarAngle = Math.PI / 2;
 
-    // Delay the camera animation by 2 seconds
     setTimeout(() => {
-      // Animate the camera to the desired position
       const targetPosition = new THREE.Vector3(3.5, 0, 0);
       const duration = 3000;
       const startTime = Date.now();
@@ -84,7 +86,7 @@ const MyScene = () => {
       };
 
       animateCameraIn();
-    }, 2000); // 2 seconds delay
+    }, 2000);
 
     const handleKeyPress = (event) => {
       switch (event.key) {
@@ -114,8 +116,7 @@ const MyScene = () => {
       camera.current.updateProjectionMatrix();
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(innerWidth, innerHeight);
-      // Adjust model scale based on the screen size
-      const scale = window.innerWidth / 1000; // Adjust the scale factor as needed
+      const scale = window.innerWidth / 1000;
       model.current.scale.set(scale, scale, scale);
     };
 
@@ -136,12 +137,18 @@ const MyScene = () => {
     };
   }, [handleNavigation]);
 
-  return null; // No need to return anything from MyScene
-};
+  React.useImperativeHandle(ref, () => ({
+    camera,
+    controls,
+  }));
 
-// Outside of MyScene component, create a single Canvas component
+  return null;
+});
+
 const App = () => {
-  const handleNavigation = useCallback((targetPosition) => {
+  const mySceneRef = useRef();
+
+  const handleNavigation = useCallback((targetPosition, camera, controls) => {
     const startPosition = camera.current.position.clone();
     const duration = 1000;
     const startTime = Date.now();
@@ -163,9 +170,9 @@ const App = () => {
 
   return (
     <>
-      <Navbar handleNavigation={handleNavigation} />
+      <Navbar handleNavigation={handleNavigation} mySceneRef={mySceneRef} />
       <Canvas style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-        <MyScene />
+        <MyScene ref={mySceneRef} />
       </Canvas>
     </>
   );
