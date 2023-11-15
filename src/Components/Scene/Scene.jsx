@@ -5,20 +5,35 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const Navbar = ({ handleNavigation, mySceneRef }) => {
+  const buttonStyles = {
+    backgroundColor: "black",
+    color: "white",
+    width:"20vw"
+  };
+
+  const navbarStyle = { 
+    position: 'absolute',
+    top: 10, 
+    left: 10, 
+    zIndex: 1,
+    marginLeft:"10vw",
+   }
+
   const handleButtonClick = (targetPosition) => {
     const { camera, controls } = mySceneRef.current;
     handleNavigation(targetPosition, camera, controls);
   };
 
   return (
-    <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 1 }}>
-      <button onClick={() => handleButtonClick(new THREE.Vector3(3.5, 0, 0))}>About</button>
-      <button onClick={() => handleButtonClick(new THREE.Vector3(-3.5, 0, 0))}>Football</button>
-      <button onClick={() => handleButtonClick(new THREE.Vector3(0, 0, 3.5))}>Skills</button>
-      <button onClick={() => handleButtonClick(new THREE.Vector3(0, 0, -3.5))}>Projects</button>
+    <div style={navbarStyle}>
+      <button style={buttonStyles} onClick={() => handleButtonClick(new THREE.Vector3(3.5, 0, 0))}>About</button>
+      <button style={buttonStyles} onClick={() => handleButtonClick(new THREE.Vector3(-3.5, 0, 0))}>Football</button>
+      <button style={buttonStyles} onClick={() => handleButtonClick(new THREE.Vector3(0, 0, 3.5))}>Skills</button>
+      <button style={buttonStyles} onClick={() => handleButtonClick(new THREE.Vector3(0, 0, -3.5))}>Projects</button>
     </div>
   );
 };
+
 
 const MyScene = React.forwardRef((props, ref) => {
   const camera = useRef(new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000));
@@ -47,16 +62,8 @@ const MyScene = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-
-    // Explicitly set the canvas size using window dimensions
-    const canvasWidth = window.innerWidth;
-    const canvasHeight = window.innerHeight;
-    renderer.setSize(canvasWidth, canvasHeight);
-
-    // Explicitly set the pixel ratio for better control over rendering quality
-    const pixelRatio = window.devicePixelRatio || 1;
-    renderer.setPixelRatio(pixelRatio);
-
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(innerWidth, innerHeight);
     document.body.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
@@ -96,15 +103,40 @@ const MyScene = React.forwardRef((props, ref) => {
       animateCameraIn();
     }, 2000);
 
-    const handleResize = () => {
-      const newWidth = window.innerWidth;
-      const newHeight = window.innerHeight;
+    // const handleKeyPress = (event) => {
+    //   switch (event.key) {
+    //     case '1':
+    //       handleNavigation(new THREE.Vector3(3.5, 0, 0));
+    //       break;
+    //     case 'L':
+    //       console.log('Camera Position:', camera.current.position.toArray());
+    //       break;
+    //     case '2':
+    //       handleNavigation(new THREE.Vector3(-3.5, 0, 0));
+    //       break;
+    //     case '3':
+    //       handleNavigation(new THREE.Vector3(0, 0, 3.5));
+    //       break;
+    //     case '4':
+    //       handleNavigation(new THREE.Vector3(0, 0, -3.5));
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // };
 
-      // Update renderer size and aspect ratio
-      renderer.setSize(newWidth, newHeight);
-      camera.current.aspect = newWidth / newHeight;
-      camera.current.updateProjectionMatrix();
-    };
+    // const handleResize = () => {
+    //   const newAspect = window.innerWidth / window.innerHeight;
+    //   camera.current.aspect = newAspect;
+    //   camera.current.updateProjectionMatrix();
+    //   renderer.setPixelRatio(window.devicePixelRatio);
+    //   renderer.setSize(innerWidth, innerHeight);
+    //   const scale = window.innerWidth / 1000;
+    //   model.current.scale.set(scale, scale, scale);
+    // };
+
+    // window.addEventListener('resize', handleResize);
+    // document.addEventListener('keydown', handleKeyPress);
 
     const animate = () => {
       controls.current.update();
@@ -112,11 +144,11 @@ const MyScene = React.forwardRef((props, ref) => {
       requestAnimationFrame(animate);
     };
 
-    window.addEventListener('resize', handleResize);
     animate();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      // document.removeEventListener('keydown', handleKeyPress);
+      // window.removeEventListener('resize', handleResize);
     };
   }, [handleNavigation]);
 
