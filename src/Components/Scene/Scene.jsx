@@ -7,10 +7,11 @@ import { Clock } from 'three/src/core/Clock';
 
 const Navbar = ({ handleNavigation, mySceneRef }) => {
   const buttonStyles = {
-    backgroundColor: "black",
+    backgroundColor: "Transparent",
     color: "white",
     width: "20vw",
     fontFamily: "Roboto, sans-serif",
+    border: "none"
   };
 
   const navbarStyle = { 
@@ -66,7 +67,7 @@ const MyScene = React.forwardRef((props, ref) => {
 
   const rotateCamera = () => {
     const clock = new Clock();
-    const rotationSpeed = 0.1;
+    const rotationSpeed = 0.25;
 
     const animateRotation = () => {
       const delta = clock.getDelta();
@@ -98,7 +99,7 @@ const MyScene = React.forwardRef((props, ref) => {
       scene.add(model.current);
     });
 
-    camera.current.position.set(10, 0, 0);
+    camera.current.position.set(7.5, 0, 0);
     camera.current.lookAt(0, 0, 0);
 
     controls.current = new OrbitControls(camera.current, renderer.domElement);
@@ -126,7 +127,9 @@ const MyScene = React.forwardRef((props, ref) => {
 
       animateCameraIn();
     }, 2000);
-    rotateCamera();
+    setTimeout(() => {
+      rotateCamera();
+    }, 5000);
     const animate = () => {
       controls.current.update();
       renderer.render(scene, camera.current);
