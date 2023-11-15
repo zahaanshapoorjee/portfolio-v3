@@ -50,7 +50,7 @@ const MyScene = React.forwardRef((props, ref) => {
 
   const handleNavigation = useCallback((targetPosition) => {
     const startPosition = camera.current.position.clone();
-    const duration = 1000;
+    const duration = 5000;
     const startTime = Date.now();
 
     const animate = () => {
