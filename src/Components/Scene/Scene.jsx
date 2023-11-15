@@ -47,9 +47,16 @@ const MyScene = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(innerWidth, innerHeight);
-    document.body.appendChild(renderer.domElement);
+     // Explicitly set the canvas size using window dimensions
+     const canvasWidth = window.innerWidth;
+     const canvasHeight = window.innerHeight;
+     renderer.setSize(canvasWidth, canvasHeight);
+ 
+     // Explicitly set the pixel ratio for better control over rendering quality
+     const pixelRatio = window.devicePixelRatio || 1;
+     renderer.setPixelRatio(pixelRatio);
+ 
+     document.body.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
 
