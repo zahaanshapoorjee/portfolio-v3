@@ -13,9 +13,9 @@ const Navbar = ({ handleNavigation, mySceneRef }) => {
   return (
     <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 1 }}>
       <button onClick={() => handleButtonClick(new THREE.Vector3(3.5, 0, 0))}>About</button>
-      <button onClick={() => handleButtonClick(new THREE.Vector3(-3.5, 0, 0))}>Skills</button>
-      <button onClick={() => handleButtonClick(new THREE.Vector3(0, 0, 3.5))}>Projects</button>
-      <button onClick={() => handleButtonClick(new THREE.Vector3(0, 0, -3.5))}>Football</button>
+      <button onClick={() => handleButtonClick(new THREE.Vector3(-3.5, 0, 0))}>Football</button>
+      <button onClick={() => handleButtonClick(new THREE.Vector3(0, 0, 3.5))}>Skills</button>
+      <button onClick={() => handleButtonClick(new THREE.Vector3(0, 0, -3.5))}>Projects</button>
     </div>
   );
 };
