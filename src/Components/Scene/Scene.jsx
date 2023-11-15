@@ -29,6 +29,7 @@ const Navbar = ({ handleNavigation, mySceneRef }) => {
 
   const handleButtonClick = (targetPosition) => {
     const { camera, controls } = mySceneRef.current;
+    controls.current.autoRotate = false;
     handleNavigation(targetPosition, camera, controls);
   };
 
@@ -68,27 +69,6 @@ const MyScene = React.forwardRef((props, ref) => {
     animate();
   }, []);
 
-  const rotateCamera = () => {
-    const clock = new Clock();
-    const rotationSpeed = 0.25;
-
-    const animateRotation = () => {
-      const delta = clock.getDelta();
-      const elapsedTime = clock.getElapsedTime();
-
-      // Adjust the rotation here, for example, rotate around the Y-axis
-      camera.current.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotationSpeed * delta);
-
-      controls.current.update();
-
-      requestAnimationFrame(animateRotation);
-    };
-    animateRotation();
-
-    
-  };
-
-
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -111,6 +91,33 @@ const MyScene = React.forwardRef((props, ref) => {
     controls.current.dampingFactor = 0.25;
     controls.current.screenSpacePanning = false;
     controls.current.maxPolarAngle = Math.PI / 2;
+    controls.current.autoRotate = true;
+    controls.current.autoRotateSpeed = 3.0; 
+
+    const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  const handleMouseMove = (event) => {
+    // Calculate normalized device coordinates (NDC) from mouse position
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Update the raycaster with the mouse position
+    raycaster.setFromCamera(mouse, camera.current);
+
+    // Check for intersections
+    const intersects = raycaster.intersectObjects([model.current], true);
+    if (intersects.length > 0) {
+      controls.current.autoRotate = false;
+    }
+    else
+    {
+      controls.current.autoRotate = true;
+    }
+  };
+
+  // Add event listener for mouse move
+  window.addEventListener('mousemove', handleMouseMove);
 
     setTimeout(() => {
       const targetPosition = new THREE.Vector3(3.5, 0, 0);
@@ -131,9 +138,11 @@ const MyScene = React.forwardRef((props, ref) => {
 
       animateCameraIn();
     }, 2000);
-    setTimeout(() => {
-      rotateCamera();
-    }, 0);
+
+    
+      
+  
+    
     const animate = () => {
       controls.current.update();
       renderer.render(scene, camera.current);
