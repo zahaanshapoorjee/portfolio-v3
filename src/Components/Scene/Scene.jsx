@@ -40,10 +40,10 @@ const Navbar = ({ handleNavigation, mySceneRef }) => {
 
   return (
     <div style={navbarStyle}>
-      <button style={buttonStyles} onMouseLeave={handleLeave} onMouseEnter={() => handleButtonClick(new THREE.Vector3(3.5, 0, 0))}>About Me</button>
-      <button style={buttonStyles} onMouseLeave={handleLeave} onMouseEnter={() => handleButtonClick(new THREE.Vector3(-3.5, 0, 0))}>Football</button>
-      <button style={buttonStyles} onMouseLeave={handleLeave} onMouseEnter={() => handleButtonClick(new THREE.Vector3(0, 0, 3.5))}>Skills</button>
-      <button style={buttonStyles} onMouseLeave={handleLeave} onMouseEnter={() => handleButtonClick(new THREE.Vector3(0, 0, -3.5))}>Projects</button>
+      <button style={buttonStyles} onMouseLeave={handleLeave} onMouseEnter={() => handleButtonClick(new THREE.Vector3(4, 0, 0))}>About Me</button>
+      <button style={buttonStyles} onMouseLeave={handleLeave} onMouseEnter={() => handleButtonClick(new THREE.Vector3(-4, 0, 0))}>Football</button>
+      <button style={buttonStyles} onMouseLeave={handleLeave} onMouseEnter={() => handleButtonClick(new THREE.Vector3(0, 0, 4))}>Skills</button>
+      <button style={buttonStyles} onMouseLeave={handleLeave} onMouseEnter={() => handleButtonClick(new THREE.Vector3(0, 0, -4))}>Projects</button>
     </div>
   );
 };
@@ -101,31 +101,8 @@ const MyScene = React.forwardRef((props, ref) => {
 
     const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
-
-  // const handleMouseMove = (event) => {
-  //   // Calculate normalized device coordinates (NDC) from mouse position
-  //   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  //   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-  //   // Update the raycaster with the mouse position
-  //   raycaster.setFromCamera(mouse, camera.current);
-
-  //   // Check for intersections
-  //   const intersects = raycaster.intersectObjects([model.current], true);
-  //   if (intersects.length > 0) {
-  //     controls.current.autoRotate = false;
-  //   }
-  //   else
-  //   {
-  //     controls.current.autoRotate = true;
-  //   }
-  // };
-
-  // // Add event listener for mouse move
-  // window.addEventListener('mousemove', handleMouseMove);
-
     setTimeout(() => {
-      const targetPosition = new THREE.Vector3(3.5, 0, 0);
+      const targetPosition = new THREE.Vector3(4, 0, 0);
       const duration = 500;
       const startTime = Date.now();
 
