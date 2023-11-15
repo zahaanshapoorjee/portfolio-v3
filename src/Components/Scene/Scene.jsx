@@ -3,6 +3,7 @@ import { Canvas } from 'react-three-fiber';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { Clock } from 'three/src/core/Clock';
 
 const Navbar = ({ handleNavigation, mySceneRef }) => {
   const buttonStyles = {
@@ -54,14 +55,34 @@ const MyScene = React.forwardRef((props, ref) => {
 
       camera.current.position.lerpVectors(startPosition, targetPosition, progress);
       controls.current.update();
-
       if (progress < 1) {
         requestAnimationFrame(animate);
       }
+      
     };
 
     animate();
   }, []);
+
+  const rotateCamera = () => {
+    const clock = new Clock();
+    const rotationSpeed = 0.1;
+
+    const animateRotation = () => {
+      const delta = clock.getDelta();
+      const elapsedTime = clock.getElapsedTime();
+
+      // Adjust the rotation here, for example, rotate around the Y-axis
+      camera.current.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotationSpeed * delta);
+
+      controls.current.update();
+
+      requestAnimationFrame(animateRotation);
+    };
+
+    animateRotation();
+  };
+
 
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -105,7 +126,7 @@ const MyScene = React.forwardRef((props, ref) => {
 
       animateCameraIn();
     }, 2000);
-
+    rotateCamera();
     const animate = () => {
       controls.current.update();
       renderer.render(scene, camera.current);
