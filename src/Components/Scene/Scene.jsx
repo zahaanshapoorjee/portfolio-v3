@@ -20,8 +20,9 @@ const Navbar = ({ handleNavigation, mySceneRef }) => {
     left: 0, 
     zIndex: 1,
     marginLeft:"10vw",
-    marginBottom:"2vh",
-    height:"5vh"
+    marginRight:"10vw",
+    height:"5vh",
+    width:"80vw"
    }
 
   const handleButtonClick = (targetPosition) => {
@@ -110,7 +111,7 @@ const MyScene = React.forwardRef((props, ref) => {
 
     setTimeout(() => {
       const targetPosition = new THREE.Vector3(3.5, 0, 0);
-      const duration = 3000;
+      const duration = 500;
       const startTime = Date.now();
 
       const animateCameraIn = () => {
@@ -129,7 +130,7 @@ const MyScene = React.forwardRef((props, ref) => {
     }, 2000);
     setTimeout(() => {
       rotateCamera();
-    }, 5000);
+    }, 0);
     const animate = () => {
       controls.current.update();
       renderer.render(scene, camera.current);
@@ -174,12 +175,12 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <div style={{display:"flex", justifyContent:"center"}}>
       <Navbar handleNavigation={handleNavigation} mySceneRef={mySceneRef} />
       <Canvas style={{ position: 'absolute', top: "6.5vh", left: 0, width: '100%', height: '93.5%' }}>
         <MyScene ref={mySceneRef} />
       </Canvas>
-    </>
+    </div>
   );
 };
 
