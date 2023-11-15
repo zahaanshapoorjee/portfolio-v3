@@ -8,15 +8,18 @@ const Navbar = ({ handleNavigation, mySceneRef }) => {
   const buttonStyles = {
     backgroundColor: "black",
     color: "white",
-    width:"20vw"
+    width: "20vw",
+    fontFamily: "Roboto, sans-serif",
   };
 
   const navbarStyle = { 
     position: 'absolute',
-    top: 10, 
-    left: 10, 
+    top: "1.5vh", 
+    left: 0, 
     zIndex: 1,
     marginLeft:"10vw",
+    marginBottom:"2vh",
+    height:"5vh"
    }
 
   const handleButtonClick = (targetPosition) => {
@@ -186,7 +189,7 @@ const App = () => {
   return (
     <>
       <Navbar handleNavigation={handleNavigation} mySceneRef={mySceneRef} />
-      <Canvas style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+      <Canvas style={{ position: 'absolute', top: "6.5vh", left: 0, width: '100%', height: '93.5%' }}>
         <MyScene ref={mySceneRef} />
       </Canvas>
     </>
