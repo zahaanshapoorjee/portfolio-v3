@@ -43,6 +43,26 @@ const MyScene = React.forwardRef((props, ref) => {
   const controls = useRef(null);
   const model = useRef(null);
 
+  const handleNavigation = useCallback((targetPosition) => {
+    const startPosition = camera.current.position.clone();
+    const duration = 1000;
+    const startTime = Date.now();
+
+    const animate = () => {
+      const currentTime = Date.now();
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+
+      camera.current.position.lerpVectors(startPosition, targetPosition, progress);
+      controls.current.update();
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    animate();
+  }, []);
+
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -66,28 +86,37 @@ const MyScene = React.forwardRef((props, ref) => {
     controls.current.screenSpacePanning = false;
     controls.current.maxPolarAngle = Math.PI / 2;
 
-    const rotateCamera = () => {
-      // Rotating the camera about the origin
-      const radius = 10;
-      const theta = Date.now() * 0.0001;
-      const x = radius * Math.sin(theta);
-      const z = radius * Math.cos(theta);
+    setTimeout(() => {
+      const targetPosition = new THREE.Vector3(3.5, 0, 0);
+      const duration = 3000;
+      const startTime = Date.now();
 
-      camera.current.position.set(x, 0, z);
-      camera.current.lookAt(0, 0, 0);
+      const animateCameraIn = () => {
+        const currentTime = Date.now();
+        const progress = Math.min((currentTime - startTime) / duration, 1);
 
+        camera.current.position.lerpVectors(camera.current.position, targetPosition, progress);
+        controls.current.update();
+
+        if (progress < 1) {
+          requestAnimationFrame(animateCameraIn);
+        }
+      };
+
+      animateCameraIn();
+    }, 2000);
+
+    const animate = () => {
       controls.current.update();
       renderer.render(scene, camera.current);
-
-      requestAnimationFrame(rotateCamera);
+      requestAnimationFrame(animate);
     };
 
-    rotateCamera(); // Start rotating about the origin immediately
+    animate();
 
     return () => {
-      // Clean up
     };
-  }, []);
+  }, [handleNavigation]);
 
   React.useImperativeHandle(ref, () => ({
     camera,
@@ -96,8 +125,6 @@ const MyScene = React.forwardRef((props, ref) => {
 
   return null;
 });
-
-
 
 const App = () => {
   const mySceneRef = useRef();
