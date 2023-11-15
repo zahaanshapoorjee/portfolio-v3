@@ -88,41 +88,6 @@ const MyScene = React.forwardRef((props, ref) => {
       animateCameraIn();
     }, 2000);
 
-    const handleKeyPress = (event) => {
-      switch (event.key) {
-        case '1':
-          handleNavigation(new THREE.Vector3(3.5, 0, 0));
-          break;
-        case 'L':
-          console.log('Camera Position:', camera.current.position.toArray());
-          break;
-        case '2':
-          handleNavigation(new THREE.Vector3(-3.5, 0, 0));
-          break;
-        case '3':
-          handleNavigation(new THREE.Vector3(0, 0, 3.5));
-          break;
-        case '4':
-          handleNavigation(new THREE.Vector3(0, 0, -3.5));
-          break;
-        default:
-          break;
-      }
-    };
-
-    const handleResize = () => {
-      const newAspect = window.innerWidth / window.innerHeight;
-      camera.current.aspect = newAspect;
-      camera.current.updateProjectionMatrix();
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(innerWidth, innerHeight);
-      const scale = window.innerWidth / 1000;
-      model.current.scale.set(scale, scale, scale);
-    };
-
-    window.addEventListener('resize', handleResize);
-    document.addEventListener('keydown', handleKeyPress);
-
     const animate = () => {
       controls.current.update();
       renderer.render(scene, camera.current);
@@ -132,8 +97,6 @@ const MyScene = React.forwardRef((props, ref) => {
     animate();
 
     return () => {
-      document.removeEventListener('keydown', handleKeyPress);
-      window.removeEventListener('resize', handleResize);
     };
   }, [handleNavigation]);
 
