@@ -194,7 +194,7 @@ const App = () => {
   return (
     <div style={{display:"flex", justifyContent:"center"}}>
       <Navbar handleNavigation={handleNavigation} mySceneRef={mySceneRef} />
-      <Canvas style={{ position: 'absolute', marginTop: "6.5vh", left: 0, width: '100%', height: '93.5%' }}>
+      <Canvas style={{ position: 'absolute', top: "6.5vh", left: 0, width: '100%', height: '93.5%' }}>
         <MyScene ref={mySceneRef} />
       </Canvas>
     </div>
